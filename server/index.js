@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from "./routes/auth.js";
 import projectRoutes from "./routes/project.js";
+import financeRoutes from "./routes/finance.js";
 import classRoutes from "./routes/projectClassRoutes.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -27,7 +28,7 @@ app.use(cors({
 app.use("/auth", authRoutes);
 app.use("/project", classRoutes);
 app.use("/project", projectRoutes);
-
+app.use("/finance", financeRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

@@ -18,7 +18,7 @@ export const register = (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
       if (err) return res.status(500).json(err);
 
-      const insertQuery = "INSERT INTO hereglegch (ovog, ner, email, lojin_pass) VALUES (?, ?, ?, ?)";
+      const insertQuery = "INSERT INTO hereglegch (ovog, ner, email, login_pass) VALUES (?, ?, ?, ?)";
       const values = [req.body.lname, req.body.fname, req.body.email, hashedPassword];
 
       db.query(insertQuery, values, (err, data) => {
@@ -36,7 +36,7 @@ export const register = (req, res) => {
 
 //LOGIN
 export const login = (req, res) => {
-  const q = "SELECT email, lojin_pass FROM hereglegch WHERE email = ?";
+  const q = "SELECT email, login_pass FROM hereglegch WHERE email = ?";
 
   db.query(q, [req.body.email], async (err, data) => {
     if (err) {
@@ -49,7 +49,7 @@ export const login = (req, res) => {
     }
 
     const user = data[0];
-    const passwordMatch = await bcrypt.compare(req.body.password, user.lojin_pass);
+    const passwordMatch = await bcrypt.compare(req.body.password, user.login_pass);
 
     if (!passwordMatch) {
       console.log("Wrong email or password:", req.body.email);
@@ -57,7 +57,7 @@ export const login = (req, res) => {
     }
 
     const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1d' });
-    const { lojin_pass, ...other } = user;
+    const { login_pass, ...other } = user;
 
     res.cookie("access_token", token, { httpOnly: true })
       .status(200)

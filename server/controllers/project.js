@@ -16,10 +16,10 @@ const upload = multer({ storage: storage }).single('imgRef');
 export const createProject = (req, res) => {
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
-            // A Multer error occurred when uploading.
+            
             return res.status(500).json(err);
         } else if (err) {
-            // An unknown error occurred when uploading.
+            
             return res.status(500).json(err);
         }
         
@@ -27,7 +27,7 @@ export const createProject = (req, res) => {
         const values = [
             req.body.name, 
             req.body.selectedclassName, 
-            req.file.filename, // Using req.file to access the uploaded file
+            req.file.filename, //req.file
             req.body.selectedType, 
             req.body.dateStart,
             req.body.dateEnd, 
